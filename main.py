@@ -8,12 +8,12 @@ from PyQt5.QtWidgets import (QLabel, QApplication, QMessageBox, QPushButton,
 
 ides_gen = id_generator()
 
-ventana = uic.loadUiType("ventana.ui")
+ventana_principal = uic.loadUiType("ventana.ui")
 ventana_ingreso = uic.loadUiType("ventana_ingreso.ui")
 ventana_estadisticas = uic.loadUiType("ventana_estadisticas.ui")
 
 
-class Ventana(ventana[0], ventana[1]):
+class Ventana(ventana_principal[0], ventana_principal[1]):
 
     def __init__(self):
         super().__init__()
@@ -93,14 +93,6 @@ class Ventana(ventana[0], ventana[1]):
     def terminar_simulacion(self, tipo_simulacion):
         if tipo_simulacion == "Manual":
             self.boton.setEnabled(False)
-        '''
-        label = QLabel("Termino de la simulación", self)
-        boton = QPushButton("Ver estadísticas")
-        vbox_layout = QVBoxLayout()
-        vbox_layout.addWidget(label)
-        vbox_layout.addWidget(boton)
-        self.layout_principal.insertLayout(0, vbox_layout)
-        '''
         mensaje = QMessageBox()
         mensaje.setText("Termino de la simulación")
         mensaje.setWindowTitle("DES")
@@ -118,7 +110,9 @@ class Ventana(ventana[0], ventana[1]):
             label.setAlignment(Qt.AlignCenter)
             layout.addWidget(label)
 
-
+    def closeEvent(self, CloseEvent):
+        self.simulacion.continuar = False
+        super(ventana_principal[1], self).closeEvent(CloseEvent)
 
 
 class VentanaIngreso(ventana_ingreso[0], ventana_ingreso[1]):
@@ -127,6 +121,7 @@ class VentanaIngreso(ventana_ingreso[0], ventana_ingreso[1]):
         super().__init__()
         self.setupUi(self)
         self.show()
+
 
 class VentanaEstadisticas(ventana_estadisticas[0], ventana_estadisticas[1]):
 

@@ -16,7 +16,6 @@ def id_generator():
 ides_gen = id_generator()
 
 
-
 class Cliente():
 
 
@@ -68,7 +67,6 @@ class Cliente():
         return "Cliente {}".format(self._id)
 
 
-
 class Comida:
 
     @staticmethod
@@ -81,7 +79,6 @@ class Comida:
         self.tipo = Comida.elegir_comida()
         self.precio = randint(100, 200)
         self.tiempo_en_comer = randint(4, 8)
-
 
 
 class Simulacion(QObject):
@@ -102,6 +99,7 @@ class Simulacion(QObject):
         self.tiempo_maximo = tiempo_maximo
         self.tasa_llegada = tasa_llegada
         self.tipo_simulacion = tipo
+        self.continuar = True
         self.velocidad_inicial = 3000
         self.velocidad = self.velocidad_inicial
 
@@ -116,10 +114,6 @@ class Simulacion(QObject):
         self.dinero = [0, 0, 0]
         self.pedidos = []
 
-
-
-
-
     def conectar_triggers(self):
         self.trigger_act_tiempo.connect(self._parent.act_tiempo)
         self.trigger_agregar_evento.connect(self._parent.agregar_evento)
@@ -132,8 +126,6 @@ class Simulacion(QObject):
     def cambiar_velocidad(self, valor):
         nueva_velocidad = self.velocidad_inicial / valor
         self.velocidad = nueva_velocidad
-
-
 
     @property
     def tiempo_actual(self):
@@ -190,7 +182,6 @@ class Simulacion(QObject):
         evento = eventos[tiempos.index(tiempo_prox_evento)]
         return evento
 
-
     def llegada_cliente(self):
         self.tiempo_actual = self.proximo_cliente_llega
         self.proximo_cliente_llega = self.tiempo_actual + expovariate(self.tasa_llegada)
@@ -244,10 +235,9 @@ class Simulacion(QObject):
         self.trigger_agregar_evento.emit(evento, round(tiempo, 2))
 
 
-
     def run(self):
 
-        while True:
+        while self.continuar:
 
             evento = self.proximo_evento
 
@@ -299,22 +289,5 @@ class Simulacion(QObject):
         return zip(estadis, var)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 if __name__ == '__main__':
-
     pass
