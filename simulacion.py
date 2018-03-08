@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from PyQt5.QtCore import pyqtSignal, QObject, Qt
 from PyQt5.QtWidgets import QLabel
 from PyQt5.QtGui import QPixmap, QPainter
@@ -13,11 +14,11 @@ def id_generator():
         yield n
         n += 1
 
+
 ides_gen = id_generator()
 
 
-class Cliente():
-
+class Cliente:
 
     def __init__(self, parent):
 
@@ -26,14 +27,12 @@ class Cliente():
         self.label.setAlignment(Qt.AlignCenter)
         self.imagen_path = "cliente_1.png"
         self.pixmap = QPixmap(self.imagen_path).scaled(30, 30)
-        self.painter = QPainter(self.pixmap)
         self.label.setPixmap(self.pixmap)
         self.caja = None
         self.pedido = None
         self.en_cola = False
         self.comiendo = False
         self.velocidad_en_comer = randint(1, 3)
-
 
         self.tiempo_decide = None
         self.tiempo_atencion = None
@@ -53,15 +52,14 @@ class Cliente():
         factor = self.pedido.tiempo_en_comer - self.velocidad_en_comer
         self.tiempo_comer = tiempo_actual + factor
 
-
     def cambiar_sprite(self):
         if self.imagen_path == "cliente_1.png":
             self.imagen_path = "cliente_2.png"
         else:
             self.imagen_path = "cliente_1.png"
-        self.imagen = QPixmap(self.imagen_path).scaled(30, 30)
+        self.pixmap = QPixmap(self.imagen_path).scaled(30, 30)
         self.label.setGeometry(0, 0, 50, 50)
-        self.label.setPixmap(self.imagen)
+        self.label.setPixmap(self.pixmap)
 
     def __repr__(self):
         return "Cliente {}".format(self._id)
@@ -72,7 +70,6 @@ class Comida:
     @staticmethod
     def elegir_comida():
         return choice(["Hamburguesa", "Papas Fritas", "Pizza", "Ensalada"])
-
 
     def __init__(self):
 
@@ -106,7 +103,6 @@ class Simulacion(QObject):
         self.clientes = []
         self.caja_1, self.caja_2, self.caja_3 = deque(), deque(), deque()
         self.cajas = [self.caja_1, self.caja_2, self.caja_3]
-
 
         self.proximo_cliente_llega = expovariate(tasa_llegada)
         self.conectar_triggers()
@@ -149,14 +145,15 @@ class Simulacion(QObject):
         if len(self.clientes):
             cliente = sorted(self.clientes, key=lambda x: x.tiempo_decide)[0]
             return cliente, cliente.tiempo_decide
-        return (None, float("Inf"))
+        return None, float("Inf")
 
     @property
     def proximo_cliente_atendido(self):
         if len(self.clientes_en_cola):
-            cliente = sorted(self.clientes_en_cola, key=lambda x: x.tiempo_atencion)[0]
+            cliente = sorted(self.clientes_en_cola,
+                             key=lambda x: x.tiempo_atencion)[0]
             return cliente, cliente.tiempo_atencion
-        return (None, float("Inf"))
+        return None, float("Inf")
 
     @property
     def proximo_cliente_come(self):
@@ -164,13 +161,14 @@ class Simulacion(QObject):
             cliente = sorted(self.clientes_comiendo,
                              key=lambda x: x.tiempo_comer)[0]
             return cliente, cliente.tiempo_comer
-        return (None, float("Inf"))
-
+        return None, float("Inf")
 
     @property
     def proximo_evento(self):
-        tiempos = [self.proximo_cliente_llega, self.proximo_cliente_decide[1],
-                   self.proximo_cliente_atendido[1], self.proximo_cliente_come[1]]
+        tiempos = [self.proximo_cliente_llega,
+                   self.proximo_cliente_decide[1],
+                   self.proximo_cliente_atendido[1],
+                   self.proximo_cliente_come[1]]
 
         tiempo_prox_evento = min(tiempos)
 
@@ -184,7 +182,8 @@ class Simulacion(QObject):
 
     def llegada_cliente(self):
         self.tiempo_actual = self.proximo_cliente_llega
-        self.proximo_cliente_llega = self.tiempo_actual + expovariate(self.tasa_llegada)
+        self.proximo_cliente_llega = self.tiempo_actual \
+                                     + expovariate(self.tasa_llegada)
         cliente = Cliente(self._parent)
         self.clientes.append(cliente)
         cliente.generar_tiempo_decide(self.tiempo_actual)
@@ -241,7 +240,6 @@ class Simulacion(QObject):
 
             evento = self.proximo_evento
 
-
             if evento == "fin":
                 print("Termino de la simulación")
                 self.tiempo_actual = self.tiempo_maximo
@@ -280,12 +278,15 @@ class Simulacion(QObject):
         n_hamburguesa = self.numero_de("Hamburguesa")
         n_ensaladas = self.numero_de("Ensalada")
         n_pizzas = self.numero_de("Pizza")
-        estadis = ["Total Clientes: ", "Clientes atendidos: ", "Dinero recaudado: ",
-                   "Dinero caja 1: ", "Dinero caja 2: ", "Dinero caja 3: ", "Nº Papas Fritas: ",
-                   "Nº Hamburguesas: ", "Nº Ensaladas: ", "Nº Pizzas: "]
-        var = [total_clientes, clientes_atendidos, dinero_recaudado, dinero_caja_1,
-               dinero_caja_2, dinero_caja_3, n_papas_fritas, n_hamburguesa, n_ensaladas,
-               n_pizzas]
+        estadis = ["Total Clientes: ", "Clientes atendidos: ",
+                   "Dinero recaudado: ", "Dinero caja 1: ",
+                   "Dinero caja 2: ", "Dinero caja 3: ",
+                   "Nº Papas Fritas: ", "Nº Hamburguesas: ",
+                   "Nº Ensaladas: ", "Nº Pizzas: "]
+
+        var = [total_clientes, clientes_atendidos, dinero_recaudado,
+               dinero_caja_1, dinero_caja_2, dinero_caja_3, n_papas_fritas,
+               n_hamburguesa, n_ensaladas, n_pizzas]
         return zip(estadis, var)
 
 

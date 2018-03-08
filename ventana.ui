@@ -76,7 +76,7 @@ background-color: rgb(0, 47, 47);
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_6">
+         <widget class="QLabel" name="label_tiempo_max">
           <property name="styleSheet">
            <string notr="true">background-color: rgb(167, 163, 126);</string>
           </property>

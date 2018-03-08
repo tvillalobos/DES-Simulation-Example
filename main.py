@@ -49,6 +49,7 @@ class Ventana(ventana_principal[0], ventana_principal[1]):
 
         tasa_llegada = self.ingreso.tasa_llegada.value()
         tiempo_max = self.ingreso.tiempo_max.value()
+        self.label_tiempo_max.setText(str(tiempo_max))
         self.simulacion = Simulacion(self, tiempo_max, tasa_llegada, tipo_simulacion)
         self.show()
         if auto:
@@ -111,7 +112,7 @@ class Ventana(ventana_principal[0], ventana_principal[1]):
             layout.addWidget(label)
 
     def closeEvent(self, CloseEvent):
-        self.simulacion.continuar = False
+        sys.exit()
         super(ventana_principal[1], self).closeEvent(CloseEvent)
 
 
