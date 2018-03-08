@@ -36,7 +36,7 @@ border: 5px solid pink;
     <number>0</number>
    </property>
    <property name="topMargin">
-    <number>50</number>
+    <number>38</number>
    </property>
    <property name="rightMargin">
     <number>0</number>
@@ -51,7 +51,7 @@ border: 5px solid pink;
       </font>
      </property>
      <property name="text">
-      <string>DES Simulation</string>
+      <string>Discrete Event Simulation</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
