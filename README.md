@@ -4,7 +4,7 @@
 
 ## Requerimientos
 
-#### - Python3 
+#### - Python 3.x
 #### - PyQt5
 
 ## Funcionamiento
